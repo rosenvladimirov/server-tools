@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="auth_o365_mail.login" name="O365 Login">
+        <t t-call="web.login_layout">
+            <form class="oe_login_form" role="form" t-attf-action="/o365/login{{ '?debug' if debug else '' }}" method="post" onsubmit="this.action = this.action + location.hash">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                <div class="form-group field-client_id">
+                    <label for="login" class="control-label">Client id</label>
+                    <input type="text" name="client_id" t-att-value="client_id" id="client_id" class="form-control" required="required" autofocus="autofocus" autocapitalize="off"/>
+                </div>
+                <div class="form-group field-tenant_id">
+                    <label for="login" class="control-label">Tenant id</label>
+                    <input type="text" name="tenant_id" t-att-value="tenant_id" id="tenant_id" class="form-control" autocapitalize="off"/>
+                </div>
+                <div class="form-group form-field  form-field-many2one o_required" data-model-field="true" data-optional="true">
+                  <label class="control-label" for="country_id">
+                    <span>Scope</span>
+                  </label>
+                  <select class="form-control o_website_form_input" name="scopes" t-att-value="scope">
+                    <option value="basic">(basic) offline_access and User.Read</option>
+                    <option value="mailbox">(mailbox) Mail.Read</option>
+                    <option value="mailbox_shared">(mailbox_shared) Mail.Read.Shared</option>
+                    <option value="message_send">(message_send) Mail.Send</option>
+                    <option value="message_send_shared">(message_send_shared) Mail.Send.Shared</option>
+                    <option value="message_all">(message_all) Mail.ReadWrite and Mail.Send</option>
+                    <option value="message_all_shared">(message_all_shared) Mail.ReadWrite.Shared and Mail.Send.Shared</option>
+                    <option value="address_book">(address_book) Contacts.Read</option>
+                    <option value="address_book_shared">(address_book_shared) Contacts.Read.Shared</option>
+                    <option value="address_book_all">(address_book_all) Contacts.ReadWrite</option>
+                    <option value="address_book_all_shared">(address_book_all_shared) Contacts.ReadWrite.Shared</option>
+                    <option value="calendar">(calendar) Calendars.Read</option>
+                    <option value="calendar_shared">(calendar_shared) Calendars.Read.Shared</option>
+                    <option value="calendar_all">(calendar_all) Calendars.ReadWrite</option>
+                    <option value="calendar_shared_all">(calendar_shared_all) Calendars.ReadWrite.Shared</option>
+                    <option value="tasks">(tasks) Tasks.Read</option>
+                    <option value="tasks_all">(tasks_all) Tasks.ReadWrite</option>
+                    <option value="users">(users) User.ReadBasic.All</option>
+                    <option value="onedrive">(onedrive) Files.Read.All</option>
+                    <option value="onedrive_all">(onedrive_all) Files.ReadWrite.All</option>
+                    <option value="sharepoint">(sharepoint) Sites.Read.All</option>
+                    <option value="sharepoint_dl">(sharepoint_dl) Sites.ReadWrite.All</option>
+                  </select>
+                </div>
+                <!--
+                <div class="form-group field-password">
+                    <label for="password" class="control-label">Client secret</label>
+                    <input type="password" name="password" id="password" class="form-control" autocomplete="current-password" t-att-autofocus="'autofocus' if login else None" maxlength="4096"/>
+                </div>
+                -->
+                <p class="alert alert-danger" t-if="error">
+                    <t t-esc="error"/>
+                </p>
+                <p class="alert alert-success" t-if="message">
+                    <t t-esc="message"/>
+                </p>
+
+                <input type="hidden" name="redirect" t-att-value="redirect"/>
+                <div class="clearfix oe_login_buttons">
+                    <button type="submit" class="btn btn-primary">Log in MS</button>
+                </div>
+            </form>
+        </t>
+    </template>
+    <template id="auth_o365_mail.status" name="O365 Status">
+        <t t-call="web.login_layout">
+            <div class="row">
+                <div class="col-xs-12">
+                    <table class="table table-condensed table-striped">
+                        <tr>
+                            <th>Client ID:</th>
+                            <td><t t-esc="client_id"/></td>
+                        </tr>
+                        <tr>
+                            <th>Tenant ID:</th>
+                            <td><t t-esc="tenant_id"/></td>
+                        </tr>
+                        <tr>
+                            <th>Main resource:</th>
+                            <td><t t-esc="main_resource"/></td>
+                        </tr>
+                        <tr t-if="access_token">
+                            <th t-if="access_token">Token:</th>
+                            <td t-if="access_token"><t t-esc="access_token"/></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

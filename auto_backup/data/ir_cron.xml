@@ -10,20 +10,7 @@
         <field name="nextcall" eval="(datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d 03:00:00')"/>
         <field name="model_id" ref="model_db_backup"/>
         <field name="state">code</field>
-        <field name="code">model.action_backup_all()</field>
-    </record>
-
-    <record id="ir_cron_backup_scheduler_hourly" model="ir.cron">
-        <field name="name">Backup Scheduler Hourly</field>
-        <field name="user_id" ref="base.user_root" />
-        <field name="interval_number">1</field>
-        <field name="interval_type">hours</field>
-        <field name="numbercall">-1</field>
-        <field name="nextcall"
-               eval="(datetime.now() + timedelta(hours=1)).strftime('%Y-%m-%d %H:%M:00')"/>
-        <field name="model_id" ref="model_db_backup"/>
-        <field name="state">code</field>
-        <field name="code">model.action_backup_all(frequency="hourly")</field>
+        <field name="code">model.with_delay().action_backup_all()</field>
     </record>
 
 </odoo>

@@ -100,7 +100,6 @@ Contributors
 * Jairo Llopis <yajo.sk8@gmail.com>
 * Dave Lasley <dave@laslabs.com>
 * Andrea Stirpe <a.stirpe@onestein.nl>
-* Jordi Riera <jordi.riera@numigi.com>
 
 Maintainer
 ----------
